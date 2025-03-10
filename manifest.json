@@ -1,0 +1,35 @@
+{
+    "manifest_version": 3,
+    "name": "SS-Notes",
+    "version": "1.2",
+    "description": "Capture a screenshot with a key press and add a corresonding note to it and then download it",
+    "permissions": [
+      "activeTab",
+      "scripting",
+      "downloads",
+      "tabs",
+      "notifications",
+      "clipboardWrite"
+    ],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "commands": {
+      "capture-screenshot": {
+        "suggested_key": {
+          "default": "Ctrl+Shift+Y"
+        },
+        "description": "Capture screenshot of current tab"
+      }
+    },
+    "icons": {
+      "128": "icon.png"
+    },
+    "web_accessible_resources": [
+    {
+      "resources": [ "fonts/MyFont.otf" ],
+      "matches": [ "<all_urls>" ]
+    }
+  ]
+  }
+  
