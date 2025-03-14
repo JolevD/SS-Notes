@@ -85,3 +85,77 @@ chrome.commands.onCommand.addListener((command) => {
         });
     }
 });
+
+
+// ---------------------
+// Injected Functions (executed in the active tab)
+// ---------------------
+
+// Hides the scrollbars by injecting a style element.
+function hideScrollbars() {
+    const style = document.createElement('style');
+    style.id = 'hide-scrollbars-style';
+    style.innerHTML = `
+      ::-webkit-scrollbar { display: none !important; }
+      html, body { overflow: hidden !important; }
+    `;
+    document.head.appendChild(style);
+}
+
+// Restores the scrollbars by removing the injected style.
+function showScrollbars() {
+    const style = document.getElementById('hide-scrollbars-style');
+    if (style) {
+        style.remove();
+    }
+}
+
+
+// Displays a temporary monochrome overlay.
+function addMonochromeEffect() {
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100vw';
+    overlay.style.height = '100vh';
+    overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.15)';
+    overlay.style.backdropFilter = 'grayscale(100%) contrast(1.1)';
+    overlay.style.zIndex = '9999999';
+    overlay.style.pointerEvents = 'none';
+    overlay.style.transition = 'opacity 0.2s ease';
+
+    // Add a subtle flash effect
+    const flash = document.createElement('div');
+    flash.style.position = 'fixed';
+    flash.style.top = '0';
+    flash.style.left = '0';
+    flash.style.width = '100vw';
+    flash.style.height = '100vh';
+    flash.style.backgroundColor = 'rgba(255, 255, 255, 0.6)';
+    flash.style.zIndex = '9999998';
+    flash.style.pointerEvents = 'none';
+    flash.style.opacity = '1';
+    flash.style.transition = 'opacity 0.1s ease';
+
+    document.body.appendChild(flash);
+    document.body.appendChild(overlay);
+
+    // Animate the flash effect
+    setTimeout(() => {
+        flash.style.opacity = '0';
+    }, 50);
+
+    setTimeout(() => {
+        flash.remove();
+    }, 150);
+
+    // Fade out the monochrome effect
+    setTimeout(() => {
+        overlay.style.opacity = '0';
+    }, 250);
+
+    setTimeout(() => {
+        overlay.remove();
+    }, 450);
+}
