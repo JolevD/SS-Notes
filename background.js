@@ -159,3 +159,21 @@ function addMonochromeEffect() {
         overlay.remove();
     }, 450);
 }
+
+function loadCustomFont() {
+    // Get the absolute URL for your font file
+    const fontUrl = chrome.runtime.getURL("fonts/MyFont.otf");
+    // Create a new FontFace instance with a custom name (e.g., 'MyCustomFont')
+    const font = new FontFace("MyCustomFont", `url(${fontUrl})`);
+    // Load the font
+    return font.load().then(loadedFont => {
+        // If available, add the loaded font to the document (or self.fonts in a worker context)
+        if (typeof document !== "undefined" && document.fonts) {
+            document.fonts.add(loadedFont);
+        } else if (self.fonts) {
+            self.fonts.add(loadedFont);
+        }
+        console.log("[Extension] Custom font loaded");
+        return loadedFont;
+    });
+}
